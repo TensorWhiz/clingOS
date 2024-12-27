@@ -1,14 +1,31 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "cargo",
-			"command": "build",
-			"problemMatcher": [
-				"$rustc"
-			],
-			"group": "build",
-			"label": "rust: cargo build"
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "os-build",
+            "type": "shell",
+            "command": "make qemu",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 1,
+                            "message": 1
+                        }
+                    ],
+                    "background": {
+                        "beginsPattern": ".", // 通过background的强制结束
+                        "endsPattern": "." // 来提醒launch.json启动gdb
+                    }
+                }
+            ]
+        }
+        
+    ]
 }

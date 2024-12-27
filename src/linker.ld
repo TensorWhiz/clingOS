@@ -6,7 +6,6 @@ SECTIONS
 {
     . = BASE_ADDRESS;
     skernel = .;
-
     stext = .;
     .text : {
         *(.text.entry)
@@ -32,7 +31,6 @@ SECTIONS
     . = ALIGN(4K);
     edata = .;
     .bss : {
-        *(.bss.stack)
         sbss = .;
         *(.bss .bss.*)
         *(.sbss .sbss.*)

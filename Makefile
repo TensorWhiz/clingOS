@@ -2,6 +2,7 @@ TARGET      := riscv64gc-unknown-none-elf
 MODE        := debug
 KERNEL_FILE := target/$(TARGET)/$(MODE)/clingos
 BIN_FILE    := target/$(TARGET)/$(MODE)/kernel.bin
+BIOS_FILE := boot/rustsbi-qemu.bin
 
 OBJDUMP     := rust-objdump --arch-name=riscv64
 OBJCOPY     := rust-objcopy --binary-architecture=riscv64
@@ -36,8 +37,9 @@ qemu: build
 	@qemu-system-riscv64 \
     		-machine virt \
     		-nographic \
-    		-bios default \
-    		-device loader,file=$(BIN_FILE),addr=0x80200000
+    		-bios $(BIOS_FILE)  \
+    		-device loader,file=$(BIN_FILE),addr=0x80200000 \
+			-gdb tcp::1234
 
 # 一键运行
 run: build qemu
@@ -45,6 +47,6 @@ run: build qemu
 # 一键 gdb
 debug: build
 	@tmux new-session -d \
-		"qemu-system-riscv64 -machine virt -nographic -bios default -device loader,file=$(BIN_FILE),addr=0x80200000 -s -S" && \
+		"qemu-system-riscv64 -machine virt -nographic -bios $(BIOS_FILE) -device loader,file=$(BIN_FILE),addr=0x80200000 -s -S" && \
 		tmux split-window -h "riscv64-unknown-elf-gdb -ex 'file $(KERNEL_FILE)' -ex 'set arch riscv:rv64' -ex 'target remote localhost:1234'" && \
 		tmux -2 attach-session -d

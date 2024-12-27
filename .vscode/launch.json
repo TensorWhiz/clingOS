@@ -1,5 +1,21 @@
 {
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
     "configurations": [
-    
+        {
+            "preLaunchTask": "os-build",
+            "MIMode": "gdb",
+            "name": "os-debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/target/riscv64gc-unknown-none-elf/debug/clingos",
+            "miDebuggerPath": "/opt/riscv/bin/riscv64-unknown-elf-gdb",
+            "miDebuggerArgs": "-ex 'file ${workspaceFolder}/target/riscv64gc-unknown-none-elf/debug/clingos' -ex 'set arch riscv:rv64' -ex 'b *0x80200000'",
+            "miDebuggerServerAddress": "127.0.0.1:1234",
+        }
     ]
 }
